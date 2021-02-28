@@ -1,5 +1,8 @@
 import floppyforms.__future__ as forms
-from django.contrib.contenttypes.generic import GenericForeignKey
+try: # htr shall be the case for DJ>1-7?
+    from django.contrib.contenttypes.fields import GenericForeignKey
+except ImportError:
+    from django.contrib.contenttypes.generic import GenericForeignKey
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 

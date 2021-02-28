@@ -1,13 +1,19 @@
+
 from django.db import models
+# htr  well idmap makes more problems ?from idmap import models
 from django.forms.models import BaseInlineFormSet as _BaseInlineFormSet
 from django.utils.translation import ugettext_lazy as _
 from django_superform import SuperModelForm
-from django_superform.forms import SuperModelFormMetaclass
+from django_superform.forms import SuperModelFormMetaclass, SuperModelFormMixin, SuperForm
+
+#from django_superform import SuperFormMixin
+#from django_superform import SuperFormMetaclass
+
 from floppyforms import fields
 from floppyforms.__future__.models import formfield_callback as floppyforms_formfield_callback
 from floppyforms.__future__.models import ModelFormMetaclass as FloppyformsModelFormMetaclass
 import floppyforms.__future__ as forms
-
+from six import with_metaclass
 from .selectrelated import SelectRelatedField
 
 
@@ -49,6 +55,7 @@ def formfield_callback(db_field, **kwargs):
     return floppyforms_formfield_callback(db_field, **kwargs)
 
 
+#class BackendFormMetaclass(with_metaclass(SuperModelFormMetaclass, FloppyformsModelFormMetaclass)):
 class BackendFormMetaclass(SuperModelFormMetaclass, FloppyformsModelFormMetaclass):
     def __new__(mcs, name, bases, attrs):
         if 'formfield_callback' not in attrs:
@@ -56,8 +63,13 @@ class BackendFormMetaclass(SuperModelFormMetaclass, FloppyformsModelFormMetaclas
         return super(BackendFormMetaclass, mcs).__new__(
             mcs, name, bases, attrs)
 
+# class MySuperForm(six.with_metaclass(
+#                 SuperFormMetaclass,
+#                 SuperFormMixin,
+#                 MyCustomForm)):
 
-class BaseBackendForm(SuperModelForm, forms.ModelForm):
+#class BaseBackendForm(SuperModelForm, forms.ModelForm):
+class BaseBackendForm(with_metaclass(BackendFormMetaclass, forms.ModelForm)):
     '''
     This is the base form that should be used by all backends. It
     handles the language of objects as expected.
@@ -66,6 +78,8 @@ class BaseBackendForm(SuperModelForm, forms.ModelForm):
     __metaclass__ = BackendFormMetaclass
 
     class Meta:
+        #from ..backend.base.backends import BaseModelBackend
+        #model = BaseModelBackend
         exclude = ()
 
     def __init__(self, *args, **kwargs):

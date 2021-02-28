@@ -6,7 +6,11 @@ from django.template.base import token_kwargs
 from django.template.loader import render_to_string
 from django.template.defaultfilters import unordered_list
 from django.utils.encoding import force_text
-from django.core.urlresolvers import NoReverseMatch, reverse
+try: # htr dj3 fix
+    from django.urls import reverse, NoReverseMatch
+except Exception:
+    from django.core.urlresolvers import reverse, NoReverseMatch
+
 import sys
 import traceback
 

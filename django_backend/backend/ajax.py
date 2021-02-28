@@ -4,7 +4,11 @@ from django.http import HttpResponse
 from django.template import Context
 from django.template import RequestContext
 from django.template.loader import render_to_string, select_template
-from django.utils.encoding import force_unicode
+import sys
+if int(sys.version[0]) > 2:
+    my_unicode = str
+else:
+    my_unicode = unicode
 
 from ..compat import context_flatten
 from ..compat import get_template_name
@@ -70,7 +74,7 @@ class DialogResponseMixin(JsonResponseMixin):
         json_data = super(DialogResponseMixin, self).get_json(**kwargs)
         title = self.get_title()
         if title:
-            json_data['title'] = force_unicode(title)
+            json_data['title'] = my_unicode(title)
         return json_data
 
     def render_to_response(self, context, **response_kwargs):

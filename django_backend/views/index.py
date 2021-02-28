@@ -1,4 +1,7 @@
-from django.core.urlresolvers import reverse
+try: # htr dj3 fix
+    from django.urls import reverse
+except Exception:
+    from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 

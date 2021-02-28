@@ -5,7 +5,6 @@ from .backend import BaseBackend
 from .views.auth import LoginView, LogoutView
 from .views.index import IndexView
 
-
 class SiteInlineBackends(object):
     def __init__(self, site_backend):
         self.site_backend = site_backend
@@ -20,9 +19,8 @@ class SiteInlineBackends(object):
 class SiteBackend(BaseBackend):
     login = URLView(r'^login/$', LoginView)
     logout = URLView(r'^logout/$', LogoutView)
-
     index = URLView(r'^(?:(?P<site>[0-9]+)/(?P<language>[a-zA-Z_-]+)/)?$', IndexView)
-
+    app_name = 'django_backend'
     @property
     def inline_backends(self):
         return SiteInlineBackends(self)

@@ -1,4 +1,7 @@
-from django.forms.forms import pretty_name
+try:
+    from django.forms.utils import pretty_name
+except ImportError:
+    from django.forms.forms import pretty_name
 from django.template import Context
 from django.template.loader import render_to_string
 

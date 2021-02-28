@@ -1,10 +1,13 @@
 from django import template
 from django.utils.datastructures import MultiValueDict
 from django.utils.html import conditional_escape as escape
-from django.utils.encoding import smart_unicode, smart_str
 from django.template.base import token_kwargs
 import urllib
-
+import sys
+if int(sys.version[0]) > 2:
+    smart_unicode = smart_str = str
+else:
+    from django.utils.encoding import smart_unicode, smart_str
 register = template.Library()
 
 

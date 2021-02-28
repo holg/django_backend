@@ -44,6 +44,7 @@ class URLNames(object):
     '''
 
     def __init__(self, backend, trail=None, view_name=None):
+        self.app_name = 'django_backend'
         self.backend = backend
         self.trail = trail
         self.view_name = view_name

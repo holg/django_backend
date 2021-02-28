@@ -1,9 +1,12 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+try: # htr dj3 fix
+    from django.urls import reverse
+except Exception:
+    from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-
+from django.conf import settings
 
 class BackendPermissionViewMixin(object):
     '''
@@ -43,7 +46,8 @@ class BackendPermissionViewMixin(object):
 
     def _check_permissions(self):
         # Do not allow access for any non logged in user.
-        if not self.request.user.is_authenticated():
+        is_authenticated = self.request.user.is_authenticated if settings.DJANGO_MAJOR_VERSION >=2 else self.request.user.is_authenticated()
+        if not is_authenticated:
             return self.redirect_to_login()
 
         # Do not allow access for any non-staff user.

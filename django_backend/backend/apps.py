@@ -18,7 +18,6 @@ from .forms import ActionForm, SortForm
 from .urlname_helper import URLNames
 from .utils import TemplateHintProvider
 
-
 DEFAULT_REGISTRY = 'default'
 
 
@@ -29,8 +28,6 @@ class BaseBackend(TemplateHintProvider, ViewSet):
     # This is needed in some circumstances to prevent circular imports.
     from django_backend.state import language
     from django_backend.state import site
-
-    app_name = 'django_backend'
     namespace = 'django_backend'
     verbose_name = None
     verbose_name_plural = None
